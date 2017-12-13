@@ -1,0 +1,1 @@
+export const GLOBALS_SET_CORPID = 'GLOBALS_SET_CORPID';
