@@ -34,15 +34,11 @@ class DefaultView extends PureComponent{
   }
 
   componentDidMount() {
-    // $(this.flipbook).turn({
-    //   width: 400,
-    //   height: 300,
-    //   autoCenter: true
-    // });
-
-    // this.fitBaseSize(400, 300);
-    this.resize();
+    const size = this.resize();
     this.plugins();
+
+    console.log(`size: `);
+    console.log(size)
 
     window.addEventListener('resize', (e) => {
       const size = this.resize();
@@ -61,15 +57,26 @@ class DefaultView extends PureComponent{
     this.flipbook.style.width = '';
     this.flipbook.style.height = '';
 
+    console.log('client width: ' + this.flipbook.clientWidth)
+    console.log('client width: ' + this.flipbook.clientHeight)
+
     let width = this.flipbook.clientWidth,
       height = Math.round(width / this.ratio),
-      padded = Math.round(document.body.clientHeight * 0.9);
+      padded = Math.round(window.innerHeight * 0.9);
+
+    console.log('width 1: ' + width);
+    console.log('height 1: ' + height);
+    console.log('client Height:' + document.body.clientHeight);
+    console.log('window.innerHeight: '+ window.innerHeight);
 
     // if the height is too big for the window, constrain it
     if (height > padded) {
       height = padded;
       width = Math.round(height * this.ratio);
     }
+
+    console.log('width 2: ' + width);
+    console.log('height 2: ' + height);
 
     // set the width and height matching the aspect ratio
     this.flipbook.style.width = width + 'px';

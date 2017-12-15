@@ -25,6 +25,11 @@ let config = {
         test: /\.jsx$/, 
         exclude: /node_modules/, 
         loader: "babel-loader" 
+      },
+      {
+        test: /vendor\/.+\.(jsx|js)$/,
+        exclude: /node_modules/,
+        loader: 'imports-loader?jQuery=jquery,$=jquery,this=>window'
       }
     ]
   },
