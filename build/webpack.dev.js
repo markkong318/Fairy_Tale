@@ -57,10 +57,10 @@ if (env === 'development'){
       }]
     }
   );
-  devConfig.output.publicPath = 'http://127.0.0.1:8080/';
+  devConfig.output.publicPath = 'http://127.0.0.1:8085/';
   devConfig.entry = Object.assign({
     index: [
-      'webpack-dev-server/client?http://127.0.0.1:8080/',
+      'webpack-dev-server/client?http://127.0.0.1:8085/',
       'webpack/hot/dev-server'
     ]
   },devConfig.entry);

@@ -19,6 +19,7 @@
     "axios": "^0.17.1",
     "classnames": "^2.2.5",
     "dingtalk-javascript-utility": "^0.2.7",
+    "gsap": "^1.20.3",
     "history": "^4.6.3",
     "jquery": "^3.2.1",
     "lodash.assign": "^4.2.0",

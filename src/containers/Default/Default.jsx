@@ -38,14 +38,15 @@ class DefaultView extends PureComponent{
     this.plugins();
 
     console.log(`size: `);
-    console.log(size)
+    console.log(size);
 
     window.addEventListener('resize', (e) => {
       const size = this.resize();
       console.log(size);
-      console.log($(this.flipbook))
+      console.log($(this.flipbook));
       $(this.flipbook).turn('size', size.width, size.height);
     });
+
   }
 
   componentWillUnmount(){
@@ -62,7 +63,7 @@ class DefaultView extends PureComponent{
 
     let width = this.flipbook.clientWidth,
       height = Math.round(width / this.ratio),
-      padded = Math.round(window.innerHeight * 0.9);
+      padded = window.innerHeight; //Math.round(window.innerHeight * 0.9);
 
     console.log('width 1: ' + width);
     console.log('height 1: ' + height);
@@ -92,11 +93,36 @@ class DefaultView extends PureComponent{
     // run the plugin
     $(this.flipbook).turn({
       gradients: true,
-      acceleration: true
+      acceleration: true,
+      display: 'double',
     });
     // hide the body overflow
     // document.body.className = 'hide-overflow';
   }
+
+  onPagePrevPress = () => {
+    this.pagePrev.src = '/assets/pics/left02.png'
+  };
+
+  onPagePrevRelease = () => {
+    this.pagePrev.src = '/assets/pics/left01.png'
+  };
+
+  onPagePrevClick = () => {
+    $(this.flipbook).turn('previous');
+  };
+
+  onPageNextPress = () => {
+    this.pageNext.src = '/assets/pics/right02.png'
+  };
+
+  onPageNextRelease = () => {
+    this.pageNext.src = '/assets/pics/right01.png'
+  };
+
+  onPageNextClick = () => {
+    $(this.flipbook).turn('next');
+  };
 
   render() {
     console.log('DEFAULT PROPS', this.props);
@@ -115,6 +141,30 @@ class DefaultView extends PureComponent{
               <div className="page"><img src="https://raw.github.com/blasten/turn.js/master/demos/magazine/pages/04.jpg" alt="" /></div>
               <div className="page"><img src="https://raw.github.com/blasten/turn.js/master/demos/magazine/pages/05.jpg" alt="" /></div>
               <div className="page"><img src="https://raw.github.com/blasten/turn.js/master/demos/magazine/pages/06.jpg" alt="" /></div>
+            </div>
+          </div>
+        </div>
+        <div style={{ position: 'absolute', left: '0px', top: '0px', width: '100%', height: '100%' }}>
+          <div style={{ position: 'absolute', left: '0px', height: '100%' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%', marginLeft: '1vw' }}>
+              <img ref={ pagePrev => (this.pagePrev = pagePrev) }
+                   src="/assets/pics/left01.png"
+                   style={{ width: '8vw' }}
+                   onMouseDown={this.onPagePrevPress}
+                   onMouseUp={this.onPagePrevRelease}
+                   onClick={this.onPagePrevClick}
+              />
+            </div>
+          </div>
+          <div style={{ position: 'absolute', right: '0px', height: '100%' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%', marginRight: '1vw' }}>
+              <img ref={ pageNext => (this.pageNext = pageNext) }
+                   src="/assets/pics/right01.png"
+                   style={{ width: '8vw' }}
+                   onMouseDown={this.onPageNextPress}
+                   onMouseUp={this.onPageNextRelease}
+                   onClick={this.onPageNextClick}
+              />
             </div>
           </div>
         </div>
