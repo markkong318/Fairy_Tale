@@ -3,6 +3,7 @@ const base = require('./webpack.base');
 const config = require('../config');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const autoprefixer = require('autoprefixer');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 process.env.NODE_ENV = JSON.parse(config.build.env.NODE_ENV);
 
@@ -30,7 +31,10 @@ if (env === 'production'){
           warnings: false,
           drop_console: false,
         }
-      })
+      }),
+      new CopyWebpackPlugin([
+        { from: '/assets/*', to: '/dist/assets' },
+      ])
     ]
   });
   proConfig.module.rules.push({
