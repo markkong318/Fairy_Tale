@@ -123,7 +123,7 @@ class DefaultView extends PureComponent{
     $(this.flipbook).turn({
       gradients: true,
       acceleration: true,
-      display: 'double',
+      display: 'single',
     });
     // hide the body overflow
     // document.body.className = 'hide-overflow';
