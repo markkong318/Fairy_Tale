@@ -22,20 +22,31 @@ const propTypes = {
 class DefaultView extends PureComponent{
   ratio = 1.38;
 
+  NAV_STAR_ICON_ON_SRC = '/assets/pics/star02.png';
+  NAV_STAR_ICON_OFF_SRC = '/assets/pics/star01.png';
+  NAV_SPEAKER_ICON_ON_SRC = '/assets/pics/speaker01.png';
+  NAV_SPEAKER_ICON_OFF_SRC = '/assets/pics/speaker02.png';
+  NAV_BACK_ICON_ON_SRC = '/assets/pics/back02.png';
+  NAV_BACK_ICON_OFF_SRC = '/assets/pics/back01.png';
+  NAV_CLOSE_ICON_SRC = '/assets/pics/close01.png';
+
   state = {
     bgmUrl: '',
     bgmPlaying: false,
-    bgmMuted: false,
+    bgmMuted: true,
     bgmLoop: true,
     seUrl: '',
     sePlaying: false,
     seMuted: false,
     seLoop: false,
+    navStarIcon: this.NAV_STAR_ICON_OFF_SRC,
+    navSpeakerIcon: this.NAV_SPEAKER_ICON_OFF_SRC,
+    navBackIcon: this.NAV_BACK_ICON_OFF_SRC,
+    navCloseIcon: this.NAV_CLOSE_ICON_SRC,
   };
 
   constructor(props) {
     super(props);
-
   }
   
   componentWillReceiveProps(nextProps) {
@@ -61,7 +72,7 @@ class DefaultView extends PureComponent{
     });
 
     this.setState({
-      bgmUrl: '/assets/books/00_example/example.mp3',
+      bgmUrl: '',
       bgmPlaying: true,
     })
 
@@ -76,8 +87,8 @@ class DefaultView extends PureComponent{
     this.flipbook.style.width = '';
     this.flipbook.style.height = '';
 
-    console.log('client width: ' + this.flipbook.clientWidth)
-    console.log('client width: ' + this.flipbook.clientHeight)
+    console.log('client width: ' + this.flipbook.clientWidth);
+    console.log('client width: ' + this.flipbook.clientHeight);
 
     let width = this.flipbook.clientWidth,
       height = Math.round(width / this.ratio),
@@ -119,11 +130,11 @@ class DefaultView extends PureComponent{
   }
 
   onPagePrevPress = () => {
-    this.pagePrev.src = '/assets/pics/left02.png'
+    this.pagePrev.src = '/assets/pics/left02.png';
   };
 
   onPagePrevRelease = () => {
-    this.pagePrev.src = '/assets/pics/left01.png'
+    this.pagePrev.src = '/assets/pics/left01.png';
   };
 
   onPagePrevClick = () => {
@@ -131,11 +142,11 @@ class DefaultView extends PureComponent{
   };
 
   onPageNextPress = () => {
-    this.pageNext.src = '/assets/pics/right02.png'
+    this.pageNext.src = '/assets/pics/right02.png';
   };
 
   onPageNextRelease = () => {
-    this.pageNext.src = '/assets/pics/right01.png'
+    this.pageNext.src = '/assets/pics/right01.png';
   };
 
   onPageNextClick = () => {
@@ -151,23 +162,25 @@ class DefaultView extends PureComponent{
   };
 
   onBgmMutedToggle = () => {
-
     if (this.state.bgmMuted) {
       this.setState({
-        bgmMuted: true,
+        bgmMuted: false,
+        navSpeakerIcon: this.NAV_SPEAKER_ICON_OFF_SRC,
+        bgmUrl: '/assets/books/00_example/example.mp3',
       });
     } else {
       this.setState({
-        bgmMuted: false,
+        bgmMuted: true,
+        navSpeakerIcon: this.NAV_SPEAKER_ICON_ON_SRC,
       });
     }
   };
 
   render() {
-    console.log('DEFAULT PROPS', this.props);
     const { name,asyncName } = this.props.defaultData;
     const { bgmUrl, bgmPlaying, bgmMuted, bgmLoop } = this.state;
     const { seUrl, sePlaying, seMuted, seLoop } = this.state;
+    const { navStarIcon, navSpeakerIcon, navBackIcon, navCloseIcon } = this.state;
     return (
       <div className="container">
         {/*<OutPutName getDefault={ this.props.getDefault } name={ name }/>*/}
@@ -180,6 +193,7 @@ class DefaultView extends PureComponent{
           playing={bgmPlaying}
           muted={bgmMuted}
           loop={bgmLoop}
+          onError={e => console.log('onError', e)}
         />
 
         <ReactPlayer
@@ -203,13 +217,14 @@ class DefaultView extends PureComponent{
             </div>
           </div>
         </div>
-        <div style={{ position: 'absolute', left: '0px', top: '0px', width: '100%', height: '100%', pointerEvent: 'none' }}>
+
+        <div style={{ position: 'absolute', left: '0px', top: '0px', width: '100%', height: '100%', pointerEvents: 'none', zIndex: 100 }}>
 
           <div style={{ position: 'absolute', left: '0px', height: '100%' }}>
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%', marginLeft: '1vw' }}>
               <img ref={ pagePrev => (this.pagePrev = pagePrev) }
                    src="/assets/pics/left01.png"
-                   style={{ width: '8vw', pointerEvent: 'auto' }}
+                   style={{ width: '8vw', pointerEvents: 'auto' }}
                    onMouseDown={this.onPagePrevPress}
                    onMouseUp={this.onPagePrevRelease}
                    onClick={this.onPagePrevClick}
@@ -220,7 +235,7 @@ class DefaultView extends PureComponent{
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%', marginRight: '1vw' }}>
               <img ref={ pageNext => (this.pageNext = pageNext) }
                    src="/assets/pics/right01.png"
-                   style={{ width: '8vw', pointerEvent: 'auto' }}
+                   style={{ width: '8vw', pointerEvents: 'auto' }}
                    onMouseDown={this.onPageNextPress}
                    onMouseUp={this.onPageNextRelease}
                    onClick={this.onPageNextClick}
@@ -228,13 +243,13 @@ class DefaultView extends PureComponent{
             </div>
           </div>
 
-          <div ref={(header) => (this.header = header)} style={{ position: 'absolute', left: '0px', width: '100%', backgroundColor: 'black', pointerEvent: 'auto' }}>
-            <ul style={{ display: 'flex', height: '8vh', alignItems: 'center', padding: '0 10px'}}>
-              <li><img src="/assets/pics/star01.png" style={{ width: '6vh', margin: '0 1vh 0 1vh' }} /></li>
-              <li><img src="/assets/pics/speaker01.png" style={{ width: '6vh', margin: '0 1vh 0 1vh' }} onClick={this.onBgmMutedToggle} /></li>
+          <div ref={(header) => (this.header = header)} style={{ position: 'absolute', left: '0px', width: '100%', backgroundColor: 'black', pointerEvents: 'auto' }}>
+            <ul style={{ display: 'flex', height: '8vh', alignItems: 'center', padding: '0 10px' }}>
+              <li><img src={navStarIcon} style={{ width: '6vh', margin: '0 1vh 0 1vh' }} /></li>
+              <li><img src={navSpeakerIcon} style={{ width: '6vh', margin: '0 1vh 0 1vh' }} onClick={this.onBgmMutedToggle} /></li>
               <li style={{ color: 'white', fontSize: '5vh', margin: '0 auto 0 auto'}}>title</li>
-              <li><img src="/assets/pics/back01.png" style={{ width: '6vh', margin: '0 1vh 0 1vh' }} /></li>
-              <li><img src="/assets/pics/close01.png" style={{ width: '6vh', margin: '0 1vh 0 1vh' }} onClick={this.onHeaderClose} /></li>
+              <li><img src={navBackIcon} style={{ width: '6vh', margin: '0 1vh 0 1vh' }} /></li>
+              <li><img src={navCloseIcon} style={{ width: '6vh', margin: '0 1vh 0 1vh' }} onClick={this.onHeaderClose} /></li>
             </ul>
           </div>
 

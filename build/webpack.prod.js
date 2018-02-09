@@ -4,6 +4,7 @@ const config = require('../config');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const autoprefixer = require('autoprefixer');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const StringReplacePlugin = require("string-replace-webpack-plugin");
 
 process.env.NODE_ENV = JSON.parse(config.build.env.NODE_ENV);
 
@@ -33,10 +34,13 @@ if (env === 'production'){
         }
       }),
       new CopyWebpackPlugin([
-        { from: '/assets/*', to: '/dist/assets' },
-      ])
+        { from: './assets', to: './assets' },
+        { from: './deploy', to: './' },
+      ], {debug: true}),
+      new StringReplacePlugin()
     ]
   });
+
   proConfig.module.rules.push({
     test: /\.less$/,
     use: extractLess.extract({
@@ -81,6 +85,17 @@ if (env === 'production'){
         fallback: "style-loader"
     })
   })
+
+  proConfig.module.rules.push({
+    test: /src\/.+\.(jsx|js)$/,
+    loader: StringReplacePlugin.replace({
+      replacements: [
+        {
+          pattern: /\/assets\//ig,
+          replacement: () => '/Fairy_Tale/assets/',
+        }
+      ]})
+  });
 }
 
 module.exports = proConfig;
